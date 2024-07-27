@@ -9,7 +9,11 @@ function App() {
       <Navbar/>
 
       <div className="cards">
-        <Card/>
+        <Card title="Title One" description="This is description One." />
+        <Card title="Title Two" description="This is description Two." />
+        <Card title="Title Three" description="This is description Three." />
+        <Card title="Title Four" description="This is description Four." />
+        
       </div>
 
       <Footer/>
