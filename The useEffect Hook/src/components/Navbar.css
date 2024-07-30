@@ -1,0 +1,16 @@
+nav{
+    background-color: beige;
+    border-radius: 1.2rem;
+}
+    
+ul{
+    display: flex;
+    list-style: none;
+
+}
+li{
+    padding: 10px;
+}
+li:hover{
+    cursor:pointer;
+}
