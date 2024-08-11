@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Navbar from './components/Navbar'
 import { v4 as uuidv4 } from 'uuid';
 
@@ -7,6 +7,20 @@ function App() {
   const [todo, setTodo] = useState("")
   const [todos, setTodos] = useState([])
 
+  useEffect(() => {
+    let todoString = localStorage.getItem("todos")
+    if(todoString){
+      let todos = JSON.parse(localStorage.getItem("todos"))
+      setTodos(todos)
+    }
+  }, [])
+  
+
+  const saveToLS = (params) => {
+    localStorage.setItem('todos', JSON.stringify(todos))
+  }
+  
+
   const handleEdit = (e, id) => {
     let todo = todos.filter(i=>i.id === id)
     setTodo(todo[0].todo)
@@ -14,16 +28,19 @@ function App() {
       return item.id!==id
     })
     setTodos(newTodos)
+    saveToLS()
   }
   const handleDelete = (e, id) => {
     let newTodos = todos.filter(item=>{
       return item.id!==id
     })
     setTodos(newTodos)
+    saveToLS()
   }
   const handleAdd = () => {
     setTodos([...todos, {id: uuidv4(), todo, isCompleted: false}])
     setTodo("")
+    saveToLS()
   }
   const handleChange = (e) => {
     setTodo(e.target.value)
@@ -37,6 +54,7 @@ function App() {
     let newTodos = [...todos]
     newTodos[index].isCompleted = !newTodos[index].isCompleted
     setTodos(newTodos)
+    saveToLS()
   }
   
 
@@ -60,7 +78,7 @@ function App() {
               <input name={item.id} onChange={handleCheckBox} type="checkbox" value={item.isCompleted} id=''/>
               <div className={item.isCompleted?"line-through":""}>{item.todo}</div>
             </div>
-            <div className="buttons">
+            <div className="buttons flex">
               <button className='bg-violet-700 hover:bg-violet-800 rounded-lg px-4 py-1 text-white mx-2 font-bold text-sm' onClick={(e)=>{handleEdit(e, item.id)}}>Edit</button>
               <button className='bg-violet-700 hover:bg-violet-800 rounded-lg px-4 py-1 text-white mx-2 font-bold text-sm' onClick={(e)=>{handleDelete(e, item.id)}}>Delete</button>
             </div>
